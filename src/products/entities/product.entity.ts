@@ -18,4 +18,4 @@ export class Product {
   price: number;
 }
 
-export const productSchema = SchemaFactory.createForClass(Product);
+export const ProductSchema = SchemaFactory.createForClass(Product);

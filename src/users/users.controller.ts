@@ -8,7 +8,6 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
-  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -33,8 +32,8 @@ export class UsersController {
           HttpStatus.UNAUTHORIZED,
         );
       }
-      const response = await this.usersService.create(createUserDto);
-      return response;
+      await this.usersService.create(createUserDto);
+      return { message: 'User successfully created' };
     } catch (e) {
       console.log(e);
       throw new ApplicationError(
@@ -46,7 +45,7 @@ export class UsersController {
   }
 
   @Get()
-  findAll(@Query('role') role: string) {
+  findAll() {
     return this.usersService.findAll();
   }
 
