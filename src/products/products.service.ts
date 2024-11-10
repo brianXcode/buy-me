@@ -12,6 +12,7 @@ export class ProductsService {
   ) {}
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const product = new this.productModel(createProductDto);
+    await product.save();
     return product;
   }
 
@@ -20,24 +21,28 @@ export class ProductsService {
     return users;
   }
 
-  findOne(id: number): Promise<Product> {
+  findOne(id: string): Promise<Product> {
     const user = this.productModel.findOne({ _id: id }).exec();
     return user;
   }
 
   async update(
-    id: number,
+    id: string,
     updateProductDto: UpdateProductDto,
   ): Promise<Product> {
-    const product = this.productModel.findOneAndUpdate(
-      { id },
-      updateProductDto,
-    );
-    return product;
+    const user = await this.productModel
+      .findOneAndUpdate(
+        { _id: id }, // Assuming `id` is the MongoDB `_id` field
+        updateProductDto,
+        { new: true }, // This option returns the updated document
+      )
+      .exec();
+
+    return user;
   }
 
-  remove(id: number) {
-    const user = this.productModel.deleteOne({ id });
+  remove(id: string) {
+    const user = this.productModel.deleteOne({ _id: id });
     return user;
   }
 }

@@ -18,7 +18,8 @@ export class UsersService {
       password,
     };
     const user = new this.userModel(createUser);
-    return user.save();
+    await user.save();
+    return user;
   }
 
   findAll() {
@@ -26,7 +27,7 @@ export class UsersService {
     return users;
   }
 
-  findOne(id: number): Promise<User> {
+  findOne(id: string): Promise<User> {
     const user = this.userModel.findOne({ _id: id }).exec();
     return user;
   }
@@ -36,12 +37,19 @@ export class UsersService {
     return userEmail;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = this.userModel.findOneAndUpdate({ id }, updateUserDto);
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.userModel
+      .findOneAndUpdate(
+        { _id: id }, // Assuming `id` is the MongoDB `_id` field
+        updateUserDto,
+        { new: true }, // This option returns the updated document
+      )
+      .exec();
+
     return user;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     const user = this.userModel.deleteOne({ id });
     return user;
   }

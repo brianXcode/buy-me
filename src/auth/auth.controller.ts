@@ -13,7 +13,7 @@ export class AuthController {
       const accessToken = this.auth.login(body);
       if (!accessToken) {
         throw new ApplicationError(
-          'Internal Server Error',
+          'Invalid access token',
           ErrorType.InternalServerErrorException,
           HttpStatus.INTERNAL_SERVER_ERROR,
         );

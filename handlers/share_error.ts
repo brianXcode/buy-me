@@ -33,18 +33,18 @@ export class ApplicationError extends HttpException {
   statusCode: number;
 
   constructor(
-    message: string,
+    response: string,
     errorType: ErrorType,
     statusCode: number,
     errors: object = {},
   ) {
     // Ensure statusCode is provided as the first parameter
-    super(message, statusCode);
+    super(response, statusCode);
 
     this.errorType = errorType;
     this.errorReference = uuidv4(); // Generates a unique ID for the error
     this.timestamp = date.toISOString();
     this.statusCode = statusCode;
-    this.errors = message ? { message: [message] } : errors;
+    this.errors = response ? { message: [response] } : errors;
   }
 }

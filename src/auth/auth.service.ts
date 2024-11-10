@@ -16,13 +16,14 @@ export class AuthService {
   ) {}
   async login(loginDto: LoginDto): Promise<Token> {
     const user = this.userModel.findOne({ email: loginDto.email }).exec();
-    if (!user) {
+    if (!(await user).email) {
       throw new ApplicationError(
         'User does not exists',
         ErrorType.UnauthorizedException,
         HttpStatus.UNAUTHORIZED,
       );
     }
+    console.log((await user).password);
     const password = await HashPassword.comparePassword(
       loginDto.password,
       (await user).password,
